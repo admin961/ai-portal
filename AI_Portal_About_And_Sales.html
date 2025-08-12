@@ -1,0 +1,345 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>AI Portal — About Us & How It Works</title>
+<style>
+:root{
+  --bg:#0b1020; --bg2:#0e1430; --ink:#e8ecff; --muted:#a8b7ff;
+  --card: rgba(255,255,255,.05); --border: rgba(255,255,255,.1);
+  --accent1:#87a7ff; --accent2:#9cffc7; --warn:#ffd27a; --ok:#9cffc7; --bad:#ff9aa2;
+  --shadow: 0 10px 32px rgba(0,0,0,.28), 0 2px 10px rgba(0,0,0,.22);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:linear-gradient(180deg,var(--bg),var(--bg2) 50%, #0a0f29 100%);color:var(--ink);
+  font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+a{color:#cfe0ff;text-decoration:none}
+a:hover{opacity:.92;text-decoration:underline}
+.header{position:sticky;top:0;z-index:10;background:rgba(11,16,32,.7);backdrop-filter: blur(8px);border-bottom:1px solid var(--border)}
+.header-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:14px 18px}
+.logo-badge{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent2));
+  display:grid;place-items:center;color:#0b1020;font-weight:900;box-shadow:var(--shadow)}
+.brand{font-weight:900}
+.container{max-width:1180px;margin:0 auto;padding:28px 18px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:16px 0}
+@media (max-width: 980px){ .hero{grid-template-columns:1fr} }
+.card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow)}
+.pad{padding:22px}
+.kicker{color:var(--muted);text-transform:uppercase;letter-spacing:.16em;font-size:.8rem}
+.h1{font-size:clamp(30px,4.6vw,54px);line-height:1.07;margin:10px 0 6px;font-weight:900}
+.h2{font-size:clamp(22px,3.4vw,34px);line-height:1.15;margin:6px 0 8px;font-weight:850}
+.sub{color:#cbd6ff;font-size:1.1rem;margin:0 0 8px}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--border);font-size:.86rem}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.05);color:var(--ink);cursor:pointer;box-shadow:var(--shadow)}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:linear-gradient(135deg,#6f8eff,#87a7ff);color:#0b1020;border:none;font-weight:800}
+.grid{display:grid;gap:16px}
+.cols-2{grid-template-columns:1fr 1fr}
+.cols-3{grid-template-columns:repeat(3,1fr)}
+.cols-4{grid-template-columns:repeat(4,1fr)}
+@media (max-width: 980px){ .cols-3{grid-template-columns:1fr 1fr} .cols-4{grid-template-columns:1fr 1fr} }
+@media (max-width: 640px){ .cols-2, .cols-3, .cols-4{grid-template-columns:1fr} }
+.tile{padding:16px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));border:1px solid var(--border);display:flex;gap:12px;align-items:flex-start}
+.tile .ico{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg, rgba(255,255,255,.28), rgba(255,255,255,.05));display:grid;place-items:center;color:#0b1020;font-weight:900}
+.small{color:#cfdaff}
+.table{width:100%;border-collapse:separate;border-spacing:0 10px}
+.table th{padding:8px 10px;text-align:left;color:#cfe0ff}
+.table td{padding:14px 12px;background:rgba(255,255,255,.04);border:1px solid var(--border)}
+.table tr td:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
+.table tr td:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
+.accordion{border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.acc-item + .acc-item{border-top:1px solid var(--border)}
+.acc-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;background:rgba(255,255,255,.04)}
+.acc-body{display:none;padding:0 16px 16px 16px;background:rgba(255,255,255,.02)}
+.acc-item.open .acc-body{display:block}
+.system-map{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));border:1px solid var(--border);border-radius:16px;padding:16px}
+.row{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;margin:8px 0}
+.node{padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.04);display:flex;align-items:center;gap:8px}
+.arrow{opacity:.6}
+.kpi{padding:14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--border)}
+.kpi .num{font-size:26px;font-weight:900}
+.footer{color:#a9b8ff;border-top:1px solid var(--border);padding:30px 18px;margin-top:30px}
+.toast{position:fixed;right:20px;bottom:20px;padding:14px 16px;border-radius:12px;background:linear-gradient(135deg,#87a7ff,#9cffc7);color:#0b1020;font-weight:800;box-shadow:var(--shadow);display:none}
+.toast.show{display:block;animation:pop .4s ease}
+@keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+ul.check{list-style:none;padding:0;margin:0}
+ul.check li{margin:8px 0;padding-left:26px;position:relative}
+ul.check li:before{content:"✓";position:absolute;left:0;top:0;background:linear-gradient(135deg,#9cffc7,#87a7ff);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:900}
+.price{display:flex;align-items:baseline;gap:6px}
+.price .big{font-size:34px;font-weight:900}
+.badge.beta{background:linear-gradient(135deg,#ffd27a,#ffefb0);color:#0b1020;font-weight:800}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo-badge">AI</div>
+    <div class="brand">Portal</div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
+      <span class="badge beta">Beta</span>
+      <a class="btn" href="sandbox:/mnt/data/AI_Portal_Preview.html#dashboard" target="_blank">Open Dashboard ↗</a>
+      <a class="btn primary" href="#cta">Get Started</a>
+    </div>
+  </div>
+</header>
+
+<div id="toast" class="toast">Copied!</div>
+
+<section class="container hero">
+  <div>
+    <div class="kicker">About Us</div>
+    <h1 class="h1">The dashboard for the AI era</h1>
+    <p class="sub">AOL made the internet approachable with one front door. We’re doing the same for AI—one place to launch tools, route tasks, and get signal (not noise).</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+      <button class="btn" onclick="scrollToId('how')">See how it works</button>
+      <button class="btn" onclick="scrollToId('integrations')">Integrations</button>
+      <button class="btn" onclick="scrollToId('automations')">Automations</button>
+      <button class="btn" onclick="scrollToId('faq')">FAQ</button>
+    </div>
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+      <span class="badge">Private by default</span>
+      <span class="badge">No-code friendly</span>
+      <span class="badge">Plays nice with your tools</span>
+    </div>
+  </div>
+  <div class="card pad">
+    <div class="kicker">Outcomes</div>
+    <div class="grid cols-3" style="margin-top:10px">
+      <div class="kpi"><div class="small">Time saved / week</div><div class="num">5–10 hrs</div></div>
+      <div class="kpi"><div class="small">Apps replaced</div><div class="num">3–6</div></div>
+      <div class="kpi"><div class="small">Setup time</div><div class="num">&lt; 30 min</div></div>
+    </div>
+    <p class="small" style="margin-top:10px">Example for a solo founder: inbox triage + briefs + reposting + price watch + calendar hygiene.</p>
+  </div>
+</section>
+
+<section id="how" class="container">
+  <div class="card pad">
+    <div class="kicker">How it works</div>
+    <h2 class="h2">From inputs → insight → action (on autopilot)</h2>
+    <div class="system-map">
+      <div class="row">
+        <div class="node">Email</div><span class="arrow">→</span>
+        <div class="node">Docs</div><span class="arrow">→</span>
+        <div class="node">Notion</div><span class="arrow">→</span>
+        <div class="node">Web</div><span class="arrow">→</span>
+        <div class="node">APIs</div>
+      </div>
+      <div class="row"><span class="arrow">↓↓</span></div>
+      <div class="row">
+        <div class="node">Ingestion & OCR</div><span class="arrow">→</span>
+        <div class="node">Summarize & Tag</div><span class="arrow">→</span>
+        <div class="node">Prioritize</div><span class="arrow">→</span>
+        <div class="node">Decide (rules + AI)</div>
+      </div>
+      <div class="row"><span class="arrow">↓↓</span></div>
+      <div class="row">
+        <div class="node">Action: reply, schedule, draft, file, notify</div>
+      </div>
+      <div class="row"><span class="arrow">↓↓</span></div>
+      <div class="row">
+        <div class="node">Daily Brief</div><span class="arrow">→</span>
+        <div class="node">Inbox w/ Action Cards</div><span class="arrow">→</span>
+        <div class="node">Automation Logs</div>
+      </div>
+    </div>
+    <div class="grid cols-3" style="margin-top:14px">
+      <div class="tile">
+        <div class="ico">💡</div>
+        <div><h3>Smart summaries</h3><p class="small">We condense newsletters, proposals, and docs into bullet insights with links to the source. Great for newsletters and long PDFs.</p></div>
+      </div>
+      <div class="tile">
+        <div class="ico">⚙️</div>
+        <div><h3>Rules + AI</h3><p class="small">Combine your if/then rules with AI reasoning. Example: “If flight price &lt; $250 → notify; else → include in 5pm brief.”</p></div>
+      </div>
+      <div class="tile">
+        <div class="ico">🚀</div>
+        <div><h3>One‑click actions</h3><p class="small">Reply with a draft, schedule a meeting, route a file to Notion, or post to social—without leaving the portal.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="integrations" class="container">
+  <div class="card pad">
+    <div class="kicker">Connections</div>
+    <h2 class="h2">Integrations that matter (plug‑and‑play)</h2>
+    <table class="table" aria-label="Integrations table">
+      <thead><tr><th>Service</th><th>What we do</th><th>Example automation</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Notion Sync</strong></td><td>Read/write pages & databases</td><td>Auto‑file meeting notes + generate action items</td></tr>
+        <tr><td><strong>Google Drive</strong></td><td>Attach, search, summarize files</td><td>Summarize new PDFs into a 5‑bullet brief</td></tr>
+        <tr><td><strong>Email (IMAP/API)</strong></td><td>Priority inbox + action cards</td><td>Extract tasks, draft replies, schedule follow‑ups</td></tr>
+        <tr><td><strong>Calendar</strong></td><td>Smart scheduling blocks</td><td>Auto‑insert focus blocks + end‑of‑day plan</td></tr>
+        <tr><td><strong>Webhooks / n8n Bridge</strong></td><td>Trigger/receive automations</td><td>On new form lead → enrich → send intro email</td></tr>
+        <tr><td><strong>Social Scheduler</strong></td><td>Queue multi‑platform posts</td><td>Repost top newsletter insight as a daily post</td></tr>
+        <tr><td><strong>Chewy Deals</strong></td><td>Pull pet promos (example)</td><td>Include the best pet promo in the morning brief</td></tr>
+      </tbody>
+    </table>
+    <p class="small" style="margin-top:10px">Don’t see your tool? Add it via webhook or request a connector. Most services work through OAuth with scoped permissions.</p>
+  </div>
+</section>
+
+<section id="automations" class="container">
+  <div class="card pad">
+    <div class="kicker">Automation Library</div>
+    <h2 class="h2">Turn repetitive work into recipes</h2>
+    <div class="grid cols-3" style="margin-top:8px">
+      <div class="tile">
+        <div class="ico">📰</div>
+        <div><h3>Daily AI Brief</h3><p class="small">At 9:00 AM: summarize key news, your top emails, calendar changes, and 3 quick wins.</p><button class="btn" onclick="copyRecipe('Daily AI Brief at 9:00 AM: summarize news, priority emails, calendar diffs, and 3 action items.')">Copy recipe</button></div>
+      </div>
+      <div class="tile">
+        <div class="ico">💸</div>
+        <div><h3>Price Watch</h3><p class="small">Check flights or products hourly; alert if under target, else include in the 5 PM summary.</p><button class="btn" onclick="copyRecipe('Price Watch: hourly check; if price < target → notify; else → 5 PM brief.')">Copy recipe</button></div>
+      </div>
+      <div class="tile">
+        <div class="ico">📣</div>
+        <div><h3>Social Reposter</h3><p class="small">Convert a newsletter insight into a platform‑ready post with image and hashtags.</p><button class="btn" onclick="copyRecipe('Social Reposter: transform top newsletter insight into a formatted post + image.')">Copy recipe</button></div>
+      </div>
+      <div class="tile">
+        <div class="ico">📥</div>
+        <div><h3>Lead Catcher</h3><p class="small">On new form lead: enrich, draft intro, and schedule a 15‑min intro slot.</p><button class="btn" onclick="copyRecipe('Lead Catcher: webhook → enrich → draft intro → propose slots.')">Copy recipe</button></div>
+      </div>
+      <div class="tile">
+        <div class="ico">🗂️</div>
+        <div><h3>Folder Tidy</h3><p class="small">Nightly: organize files, dedupe, and create a “changes” report.</p><button class="btn" onclick="copyRecipe('Folder Tidy: nightly dedupe + organize + report changes.')">Copy recipe</button></div>
+      </div>
+      <div class="tile">
+        <div class="ico">🐾</div>
+        <div><h3>Chewy Deals (example)</h3><p class="small">Pull current pet promos and inject the best one into your daily brief.</p><button class="btn" onclick="copyRecipe('Chewy Deals: fetch promos → choose best → add to brief.')">Copy recipe</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="grid cols-2">
+    <div class="card pad">
+      <div class="kicker">Privacy & Security</div>
+      <h2 class="h2">Your data, your rules</h2>
+      <ul class="check">
+        <li>Scoped OAuth permissions (least‑privilege by default)</li>
+        <li>Human‑readable logs for every automation action</li>
+        <li>One‑click export & delete of your data</li>
+        <li>Bring‑your‑own keys for AI models and APIs</li>
+        <li>Granular sharing (keep personal vs. work separated)</li>
+      </ul>
+    </div>
+    <div class="card pad">
+      <div class="kicker">Who it’s for</div>
+      <h2 class="h2">Designed for doers</h2>
+      <div class="grid cols-2">
+        <div class="tile"><div class="ico">🧑‍💻</div><div><h3>Solo founders</h3><p class="small">Keep ops tight—less context switching, more shipping.</p></div></div>
+        <div class="tile"><div class="ico">📈</div><div><h3>Ops & PMs</h3><p class="small">Automate follow‑ups, briefs, and weekly reports.</p></div></div>
+        <div class="tile"><div class="ico">🎥</div><div><h3>Creators</h3><p class="small">Turn long reads into scripts, posts, and thumbnails.</p></div></div>
+        <div class="tile"><div class="ico">🏃</div><div><h3>Teams of one</h3><p class="small">Get enterprise‑style leverage without enterprise complexity.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="card pad">
+    <div class="kicker">Value</div>
+    <h2 class="h2">The business case in 60 seconds</h2>
+    <div class="grid cols-3" style="margin-top:8px">
+      <div class="tile"><div class="ico">⏱️</div><div><h3>Time</h3><p class="small">Save 5–10 hours/week by replacing manual triage, summaries, and reposting.</p></div></div>
+      <div class="tile"><div class="ico">🧠</div><div><h3>Focus</h3><p class="small">One home screen for AI work means fewer tabs and less mental switching.</p></div></div>
+      <div class="tile"><div class="ico">📊</div><div><h3>Consistency</h3><p class="small">Rules + AI means your processes run the same way—every time.</p></div></div>
+    </div>
+    <div class="grid cols-2" style="margin-top:14px">
+      <div class="kpi">
+        <div class="small">ROI sketch (solo founder)</div>
+        <div style="margin-top:6px">10 hrs/week × $50/hr = <strong>$500 value</strong> weekly</div>
+        <div class="small">Even at $29–$49/mo, it pays for itself within the first day of use each month.</div>
+      </div>
+      <div class="kpi">
+        <div class="small">Less waste</div>
+        <div style="margin-top:6px">Replace 3–6 separate tools with one portal. Keep the ones you love through plugins.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="container">
+  <div class="card pad">
+    <div class="kicker">FAQ</div>
+    <div class="accordion" id="acc">
+      <div class="acc-item">
+        <div class="acc-head" onclick="toggleAcc(this)"><strong>Do I need to learn prompts?</strong><span>+</span></div>
+        <div class="acc-body"><p class="small">No. We provide guided actions and templates. Start with prebuilt recipes and tweak them over time.</p></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head" onclick="toggleAcc(this)"><strong>Can I bring my own API keys?</strong><span>+</span></div>
+        <div class="acc-body"><p class="small">Yes. Use your preferred AI models and services. Keep control of spend and performance.</p></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head" onclick="toggleAcc(this)"><strong>What if my tool isn’t listed?</strong><span>+</span></div>
+        <div class="acc-body"><p class="small">Add it via webhook, or request a native connector. If it has an API, we can likely plug it in.</p></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head" onclick="toggleAcc(this)"><strong>Is my data private?</strong><span>+</span></div>
+        <div class="acc-body"><p class="small">We use least‑privilege access, transparent logs, and one‑click export/delete. You control keys and scopes.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cta" class="container">
+  <div class="card pad">
+    <div class="kicker">Get Started</div>
+    <h2 class="h2">Ready to try your AI home screen?</h2>
+    <div class="grid cols-2" style="margin-top:10px">
+      <div>
+        <ul class="check">
+          <li>Open the interactive dashboard (no login)</li>
+          <li>Install 2–3 plugins (demo)</li>
+          <li>Turn on the Daily Brief automation</li>
+          <li>Customize with your brand in minutes</li>
+        </ul>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+          <a class="btn primary" href="sandbox:/mnt/data/AI_Portal_Preview.html#dashboard" target="_blank">Open Dashboard ↗</a>
+          <a class="btn" href="sandbox:/mnt/data/AI_Portal_EnterDashboard.html" target="_blank">See “Enter Dashboard” ↗</a>
+        </div>
+      </div>
+      <div>
+        <div class="tile">
+          <div class="ico">📧</div>
+          <div>
+            <h3>Share with a friend</h3>
+            <p class="small">Pitch line:</p>
+            <code style="display:block;padding:10px;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:10px">“If AOL was the dashboard for the internet, this is the dashboard for AI.”</code>
+            <div style="margin-top:8px"><button class="btn" onclick="copyPitch()">Copy pitch</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div>© 2025 AI Portal — About & How It Works</div>
+    <div class="small">Tip: Open Dashboard to hear the nostalgic mail chime 🔔</div>
+  </div>
+</footer>
+
+<script>
+function scrollToId(id){ document.getElementById(id)?.scrollIntoView({behavior:'smooth'}) }
+function toggleAcc(el){ const item = el.parentElement; item.classList.toggle('open'); }
+function copyPitch(){ copy('If AOL was the dashboard for the internet, this is the dashboard for AI.'); }
+function copyRecipe(text){ copy(text); }
+function copy(text){
+  navigator.clipboard.writeText(text).then(()=>toast('Copied to clipboard')).catch(()=>toast('Copy failed'));
+}
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2000);
+}
+</script>
+</body>
+</html>

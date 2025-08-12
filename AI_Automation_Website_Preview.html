@@ -1,0 +1,433 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>AI Dashboard Automations — Website Preview & User Guide</title>
+<style>
+:root{
+  --bg:#0b1020; --bg2:#0e1430; --ink:#e8ecff; --muted:#a8b7ff;
+  --card: rgba(255,255,255,.05); --border: rgba(255,255,255,.1);
+  --accent1:#87a7ff; --accent2:#9cffc7; --accent3:#ffd27a;
+  --ok:#9cffc7; --warn:#ffd27a; --bad:#ff9aa2;
+  --shadow: 0 10px 32px rgba(0,0,0,.28), 0 2px 10px rgba(0,0,0,.22);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:linear-gradient(180deg,var(--bg),var(--bg2) 50%, #0a0f29 100%);color:var(--ink);
+  font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+a{color:#cfe0ff;text-decoration:none}
+a:hover{opacity:.92;text-decoration:underline}
+.header{position:sticky;top:0;z-index:10;background:rgba(11,16,32,.7);backdrop-filter: blur(8px);border-bottom:1px solid var(--border)}
+.header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:14px 18px}
+.logo-badge{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent2));
+  display:grid;place-items:center;color:#0b1020;font-weight:900;box-shadow:var(--shadow)}
+.brand{font-weight:900}
+.container{max-width:1200px;margin:0 auto;padding:28px 18px}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:center;padding:10px 0}
+@media (max-width: 980px){ .hero{grid-template-columns:1fr} }
+.card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow)}
+.pad{padding:22px}
+.kicker{color:var(--muted);text-transform:uppercase;letter-spacing:.16em;font-size:.8rem}
+.h1{font-size:clamp(30px,4.6vw,54px);line-height:1.07;margin:10px 0 6px;font-weight:900}
+.h2{font-size:clamp(22px,3.3vw,34px);line-height:1.15;margin:6px 0 8px;font-weight:850}
+.sub{color:#cbd6ff;font-size:1.1rem;margin:0 0 8px}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--border);font-size:.86rem}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.05);color:var(--ink);cursor:pointer;box-shadow:var(--shadow)}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:linear-gradient(135deg,#6f8eff,#87a7ff);color:#0b1020;border:none;font-weight:800}
+.grid{display:grid;gap:16px}
+.cols-2{grid-template-columns:1fr 1fr}
+.cols-3{grid-template-columns:repeat(3,1fr)}
+.cols-4{grid-template-columns:repeat(4,1fr)}
+@media (max-width: 980px){ .cols-3{grid-template-columns:1fr 1fr} .cols-4{grid-template-columns:1fr 1fr} }
+@media (max-width: 640px){ .cols-2, .cols-3, .cols-4{grid-template-columns:1fr} }
+
+/* Flow Diagram */
+.flow{display:grid;gap:14px}
+.flow-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center}
+.node{padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.04);display:flex;align-items:center;gap:8px}
+.node .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--accent1),var(--accent2))}
+.arrow{opacity:.6}
+.divider{height:18px;display:grid;place-items:center;color:#cbd6ff}
+
+/* Steps / Guide */
+.step{display:flex;gap:12px;padding:14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--border)}
+.step .num{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent2),var(--accent1));color:#0b1020;font-weight:900;display:grid;place-items:center}
+.small{color:#cfdaff}
+code.inline{background:rgba(255,255,255,.08);padding:2px 6px;border-radius:6px}
+.table{width:100%;border-collapse:separate;border-spacing:0 10px}
+.table th{padding:8px 10px;text-align:left;color:#cfe0ff}
+.table td{padding:14px 12px;background:rgba(255,255,255,.04);border:1px solid var(--border)}
+.table tr td:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
+.table tr td:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
+
+/* Accordion */
+.accordion{border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.acc-item + .acc-item{border-top:1px solid var(--border)}
+.acc-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;background:rgba(255,255,255,.04)}
+.acc-body{display:none;padding:0 16px 16px 16px;background:rgba(255,255,255,.02)}
+.acc-item.open .acc-body{display:block}
+
+/* Badges and KPIs */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:980px){ .kpis{grid-template-columns:1fr 1fr} }
+.kpi{padding:14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--border)}
+.kpi .num{font-size:26px;font-weight:900}
+.kpi.ok .num{color:var(--ok)} .kpi.warn .num{color:var(--warn)} .kpi.bad .num{color:var(--bad)}
+
+.footer{color:#a9b8ff;border-top:1px solid var(--border);padding:30px 18px;margin-top:30px}
+.toast{position:fixed;right:20px;bottom:20px;padding:14px 16px;border-radius:12px;background:linear-gradient(135deg,#87a7ff,#9cffc7);color:#0b1020;font-weight:800;box-shadow:var(--shadow);display:none}
+.toast.show{display:block;animation:pop .4s ease}
+@keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+ul.check{list-style:none;padding:0;margin:0}
+ul.check li{margin:8px 0;padding-left:26px;position:relative}
+ul.check li:before{content:"✓";position:absolute;left:0;top:0;background:linear-gradient(135deg,#9cffc7,#87a7ff);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:900}
+pre{white-space:pre-wrap;word-wrap:break-word;background:rgba(255,255,255,.06);border:1px solid var(--border);padding:12px;border-radius:12px}
+.tag{font-size:.8rem;color:#0b1020;background:var(--accent3);border-radius:999px;padding:4px 10px;font-weight:700}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo-badge">AI</div>
+    <div class="brand">Automation Portal</div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span class="badge">Beta</span>
+      <a class="btn" href="sandbox:/mnt/data/AI_Portal_Preview.html#dashboard" target="_blank">Open Dashboard ↗</a>
+      <a class="btn primary" href="#guide">Start Guide</a>
+    </div>
+  </div>
+</header>
+
+<div id="toast" class="toast">Copied!</div>
+
+<section class="container hero">
+  <div>
+    <div class="kicker">Website Preview</div>
+    <h1 class="h1">From inputs → insight → action (on autopilot)</h1>
+    <p class="sub">A friendly, visual walkthrough of how the portal captures Email, Docs, Notion, Web, and APIs; condenses them with AI; prioritizes with rules; and executes replies, schedules, drafts, filing, and notifications—then rolls it into a Daily Brief, an Inbox with Action Cards, and Automation Logs.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+      <button class="btn" onclick="scrollToId('flow')">See the flow</button>
+      <button class="btn" onclick="scrollToId('backend')">Back‑end made simple</button>
+      <button class="btn" onclick="scrollToId('datamodel')">Data model</button>
+      <button class="btn" onclick="scrollToId('guide')">User guide</button>
+    </div>
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+      <span class="badge">Private by default</span>
+      <span class="badge">No-code friendly</span>
+      <span class="badge">Plug‑in architecture</span>
+    </div>
+  </div>
+  <div class="card pad">
+    <div class="kicker">Quick wins</div>
+    <div class="kpis" style="margin-top:10px">
+      <div class="kpi ok"><div class="small">Setup time</div><div class="num">&lt; 30 min</div></div>
+      <div class="kpi ok"><div class="small">Weekly hours saved</div><div class="num">5–10</div></div>
+      <div class="kpi warn"><div class="small">Apps replaced</div><div class="num">3–6</div></div>
+      <div class="kpi ok"><div class="small">Noise reduced</div><div class="num">60–80%</div></div>
+    </div>
+    <p class="small" style="margin-top:10px">Estimates for a solo operator running briefs, reposts, price watches, and inbox triage.</p>
+  </div>
+</section>
+
+<section id="flow" class="container">
+  <div class="card pad">
+    <div class="kicker">Visual Flow</div>
+    <h2 class="h2">Pipeline overview</h2>
+    <div class="flow">
+      <div class="flow-row">
+        <div class="node"><div class="dot"></div> Email</div><span class="arrow">→</span>
+        <div class="node"><div class="dot"></div> Docs</div><span class="arrow">→</span>
+        <div class="node"><div class="dot"></div> Notion</div><span class="arrow">→</span>
+        <div class="node"><div class="dot"></div> Web</div><span class="arrow">→</span>
+        <div class="node"><div class="dot"></div> APIs</div>
+      </div>
+      <div class="divider">↓↓</div>
+      <div class="flow-row">
+        <div class="node"><div class="dot"></div> Ingestion & OCR</div><span class="arrow">→</span>
+        <div class="node"><div class="dot"></div> Summarize & Tag</div><span class="arrow">→</span>
+        <div class="node"><div class="dot"></div> Prioritize</div><span class="arrow">→</span>
+        <div class="node"><div class="dot"></div> Decide (rules + AI)</div>
+      </div>
+      <div class="divider">↓↓</div>
+      <div class="flow-row">
+        <div class="node"><div class="dot"></div> Action: reply, schedule, draft, file, notify</div>
+      </div>
+      <div class="divider">↓↓</div>
+      <div class="flow-row">
+        <div class="node"><div class="dot"></div> Daily Brief</div><span class="arrow">→</span>
+        <div class="node"><div class="dot"></div> Inbox w/ Action Cards</div><span class="arrow">→</span>
+        <div class="node"><div class="dot"></div> Automation Logs</div>
+      </div>
+    </div>
+    <p class="small" style="margin-top:12px">Each node below links to a step‑by‑step explanation and the exact fields we capture.</p>
+  </div>
+</section>
+
+<section id="backend" class="container">
+  <div class="card pad">
+    <div class="kicker">Back‑end</div>
+    <h2 class="h2">How we simplify it behind the scenes</h2>
+    <div class="grid cols-3" style="margin-top:10px">
+      <div class="step">
+        <div class="num">1</div>
+        <div>
+          <strong>One workflow engine (n8n)</strong>
+          <p class="small">Everything runs on one automation brain. Triggers (email, files, webhooks) → processors (OCR, AI, rules) → actions (mail, calendar, Notion, Drive) with retry and logs.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <div>
+          <strong>Unified payload</strong>
+          <p class="small">We normalize all inputs to a single JSON shape: <code class="inline">{source,title,url,text,metadata}</code>. That keeps rules and actions simple.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <div>
+          <strong>Rules first, AI second</strong>
+          <p class="small">Deterministic rules make results predictable. AI fills the gaps (e.g., extracting entities, tagging, summarizing long content).</p>
+        </div>
+      </div>
+    </div>
+    <div class="grid cols-3" style="margin-top:10px">
+      <div class="step">
+        <div class="num">4</div>
+        <div>
+          <strong>Least‑privilege connections</strong>
+          <p class="small">Scoped OAuth + BYO keys. Only the permissions required for each action (read‑only when possible).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">5</div>
+        <div>
+          <strong>Transparent logs</strong>
+          <p class="small">Every action writes a log row with timestamp, item, rule used, and result so you can audit and roll back.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">6</div>
+        <div>
+          <strong>Graceful failure</strong>
+          <p class="small">Retries, dead‑letter queue, and a 5pm summary of anything that needs a quick human nudge.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="datamodel" class="container">
+  <div class="card pad">
+    <div class="kicker">Data Model</div>
+    <h2 class="h2">Notion databases & fields</h2>
+    <table class="table" aria-label="Data model">
+      <thead><tr><th>Database</th><th>Key Properties</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Inbox Items</strong></td>
+          <td>Title, Source, Link, Summary, Entities/Tags, Priority, Action, Status, Due/When, Raw</td>
+          <td>One queue for everything we capture and process.</td>
+        </tr>
+        <tr>
+          <td><strong>Daily Briefs</strong></td>
+          <td>Date, Highlights, Top 5, Decisions Needed, Scheduled Actions, Links</td>
+          <td>Your morning “what matters” with links to act.</td>
+        </tr>
+        <tr>
+          <td><strong>Automation Logs</strong></td>
+          <td>Timestamp, Event, Item, Recipe/Rule, Result, Details</td>
+          <td>Human‑readable audit trail of actions and outcomes.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="guide" class="container">
+  <div class="card pad">
+    <div class="kicker">User Guide</div>
+    <h2 class="h2">Follow these steps to set it up</h2>
+    <div class="accordion">
+      <div class="acc-item">
+        <div class="acc-head" onclick="toggleAcc(this)"><strong>1) Connect services (Email, Drive, Notion, Calendar)</strong><span>+</span></div>
+        <div class="acc-body">
+          <ul class="check">
+            <li>Authorize read‑only access for email (Newsletter/Client labels).</li>
+            <li>Pick one Drive/OneDrive folder to watch for PDFs/images.</li>
+            <li>Copy our Notion template bundle (3 databases) into your workspace.</li>
+            <li>Connect Calendar with free/busy scope for smart scheduling.</li>
+          </ul>
+          <p class="small">All connections use least‑privilege scopes; you keep control of your keys.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head" onclick="toggleAcc(this)"><strong>2) Turn on ingestion & OCR</strong><span>+</span></div>
+        <div class="acc-body">
+          <p class="small">We poll email every 10 minutes and watch your chosen Drive folder. PDFs and images get OCR’d to text so the AI can summarize and tag them.</p>
+          <pre>Payload shape: {"{source,title,url,text,metadata}"}</pre>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head" onclick="toggleAcc(this)"><strong>3) Summarize & Tag</strong><span>+</span></div>
+        <div class="acc-body">
+          <p class="small">We condense content into 5 bullets and extract entities (people, companies, amounts, dates). The result is saved to Notion “Inbox Items.”</p>
+          <pre>Fields updated: Summary, Entities/Tags, Priority (hint), Suggested Action</pre>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head" onclick="toggleAcc(this)"><strong>4) Prioritize & Decide (Rules + AI)</strong><span>+</span></div>
+        <div class="acc-body">
+          <p class="small">Simple JSON rules do most of the work, with AI as a backstop for edge cases.</p>
+          <pre>[
+  {"{"}"if":"source=='Email' && text.includes('invoice')","then":{"{"}"priority":"P0","action":"Reply"}},
+  {"{"}"if":"entities.includes('flight') && price<250","then":{"{"}"priority":"P0","action":"Notify"}},
+  {"{"}"if":"source=='Web' && text.includes('launch')","then":{"{"}"priority":"P1","action":"Draft"}}
+]</pre>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head" onclick="toggleAcc(this)"><strong>5) Actions: reply, schedule, draft, file, notify</strong><span>+</span></div>
+        <div class="acc-body">
+          <ul class="check">
+            <li><strong>Reply:</strong> AI drafts → send via your mail with you CC’d.</li>
+            <li><strong>Schedule:</strong> Propose slots, confirm, and write back to Notion.</li>
+            <li><strong>Draft:</strong> Create a Doc/Notion page from template.</li>
+            <li><strong>File:</strong> Move/rename files and add cross‑links.</li>
+            <li><strong>Notify:</strong> Email/SMS a one‑liner with link to open.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head" onclick="toggleAcc(this)"><strong>6) Output: Daily Brief, Inbox w/ Action Cards, Automation Logs</strong><span>+</span></div>
+        <div class="acc-body">
+          <p class="small"><strong>Daily Brief</strong> at 9:00 AM: 5 highlights, decisions needed (P0), schedule changes, top links.</p>
+          <p class="small"><strong>Inbox w/ Action Cards:</strong> Quick approve, snooze, archive, escalate.</p>
+          <p class="small"><strong>Logs:</strong> A full audit trail (who/what/when) that you can export.</p>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:14px">
+      <span class="tag">Tip</span> Start with <em>Notify</em> only, then add <em>Draft</em> and <em>Schedule</em> after a day of observing the flow.
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="grid cols-2">
+    <div class="card pad">
+      <div class="kicker">Schedules</div>
+      <h2 class="h2">What runs when</h2>
+      <table class="table">
+        <thead><tr><th>Workflow</th><th>Schedule</th></tr></thead>
+        <tbody>
+          <tr><td>Ingestion & OCR</td><td>Every 10 minutes</td></tr>
+          <tr><td>Processing (Summarize, Tag, Decide)</td><td>On item create/update</td></tr>
+          <tr><td>Actions</td><td>Immediately after decision</td></tr>
+          <tr><td>Daily Brief</td><td>9:00 AM (Mon–Fri)</td></tr>
+          <tr><td>Nightly Report</td><td>10:00 PM</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card pad">
+      <div class="kicker">Privacy</div>
+      <h2 class="h2">Your data, your rules</h2>
+      <ul class="check">
+        <li>Scoped OAuth + least‑privilege permissions</li>
+        <li>Bring‑your‑own API keys for AI & services</li>
+        <li>PII redaction before AI processing (allowlist)</li>
+        <li>Human‑readable logs for every automation step</li>
+        <li>One‑click export & delete routines</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="card pad">
+    <div class="kicker">Copy‑paste Prompts</div>
+    <h2 class="h2">Use these to power the AI steps</h2>
+    <div class="grid cols-3">
+      <div class="step">
+        <div class="num">A</div>
+        <div>
+          <strong>Summarize & Extract (JSON)</strong>
+          <pre>You are an operations analyst. Read the text and output compact JSON:
+{
+  "summary": ["• point 1", "• point 2", "• point 3", "• point 4", "• point 5"],
+  "entities": ["people/companies/dates/amounts"],
+  "priority_hint": "P0|P1|P2",
+  "suggested_action": "Reply|Schedule|Draft|File|Notify|None",
+  "reasons": "one sentence"
+}
+Keep to the facts. Be concise.</pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">B</div>
+        <div>
+          <strong>Draft Reply</strong>
+          <pre>You are a helpful assistant writing a brief, professional reply.
+Context: {{summary}} | Goal: {{goal}} | Tone: friendly, concise, actionable.
+Produce: subject + 3-paragraph email + a one‑line TL;DR.</pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">C</div>
+        <div>
+          <strong>Brief Composer</strong>
+          <pre>Create a morning brief with: 5 highlights, decisions needed (P0), schedule changes, and top links.
+Write in bullets, crisp language, no filler.</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="card pad">
+    <div class="kicker">Troubleshooting</div>
+    <h2 class="h2">If something looks off</h2>
+    <div class="accordion">
+      <div class="acc-item"><div class="acc-head" onclick="toggleAcc(this)"><strong>Items not showing up in Inbox</strong><span>+</span></div>
+        <div class="acc-body"><p class="small">Check the source connection, then confirm the “watched” label/folder. Manually add a test email or PDF to trigger ingestion.</p></div>
+      </div>
+      <div class="acc-item"><div class="acc-head" onclick="toggleAcc(this)"><strong>Summaries feel generic</strong><span>+</span></div>
+        <div class="acc-body"><p class="small">Increase the temperature to 0.6 and add a domain hint (“This is about pet‑care operations”).</p></div>
+      </div>
+      <div class="acc-item"><div class="acc-head" onclick="toggleAcc(this)"><strong>Rules misfiring</strong><span>+</span></div>
+        <div class="acc-body"><p class="small">Review the JSON conditions; test with preview payloads. Keep rules specific and let AI handle the rest.</p></div>
+      </div>
+      <div class="acc-item"><div class="acc-head" onclick="toggleAcc(this)"><strong>Too many alerts</strong><span>+</span></div>
+        <div class="acc-body"><p class="small">Throttle notifications and push non‑critical updates to the 5pm summary.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="card pad">
+    <div class="kicker">Ready?</div>
+    <h2 class="h2">Open the live dashboard preview</h2>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+      <a class="btn primary" href="sandbox:/mnt/data/AI_Portal_Preview.html#dashboard" target="_blank">Open Dashboard ↗</a>
+      <a class="btn" href="sandbox:/mnt/data/AI_Portal_EnterDashboard.html" target="_blank">See “Enter Dashboard” ↗</a>
+      <a class="btn" href="sandbox:/mnt/data/AI_Portal_About_And_Sales.html" target="_blank">About & How It Works ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div>© 2025 AI Automation Portal — Website Preview & Guide</div>
+    <div class="small">Built as a demo: swap in your brand, tweak copy, or export as a site.</div>
+  </div>
+</footer>
+
+<script>
+function scrollToId(id){ document.getElementById(id)?.scrollIntoView({behavior:'smooth'}) }
+function toggleAcc(el){ const item = el.parentElement; item.classList.toggle('open'); }
+</script>
+</body>
+</html>

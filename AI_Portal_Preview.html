@@ -1,0 +1,473 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>AI Portal — Single File Preview</title>
+<style>
+:root{
+  --bg:#0b1020;
+  --bg-soft:#131a33;
+  --card:#182046;
+  --ink:#e8ecff;
+  --muted:#9fb0ff;
+  --accent:#87a7ff;
+  --green:#9cffc7;
+  --warning:#ffd27a;
+  --danger:#ff9aa2;
+  --link:#b6c7ff;
+  --shadow: 0 6px 24px rgba(0,0,0,.25), 0 2px 8px rgba(0,0,0,.2);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:linear-gradient(180deg,var(--bg),#0e1430 40%, #0a0f29 100%);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+a{color:var(--link);text-decoration:none}
+a:hover{opacity:.9;text-decoration:underline}
+.container{max-width:1100px;margin:0 auto;padding:32px 20px}
+.header{position:sticky;top:0;z-index:5;background:rgba(11,16,32,.8);backdrop-filter: blur(8px);border-bottom:1px solid rgba(255,255,255,.08)}
+.header-inner{display:flex;align-items:center;gap:18px;padding:14px 20px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-badge{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#87a7ff, #9cffc7);display:grid;place-items:center;box-shadow:var(--shadow);font-weight:800;color:#0b1020}
+.nav{margin-left:auto;display:flex;gap:18px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.1);background:var(--bg-soft);padding:10px 14px;border-radius:10px;color:var(--ink);box-shadow:var(--shadow);cursor:pointer}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:linear-gradient(135deg, #6f8eff, #87a7ff);color:#0b1020;font-weight:700;border:none}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:26px;align-items:center;padding:48px 0}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:16px;box-shadow:var(--shadow)}
+.card.pad{padding:22px}
+.kicker{color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-size:.8rem}
+.h1{font-size:clamp(28px,4.5vw,54px);line-height:1.06;margin:10px 0 6px;font-weight:850}
+.sub{color:#c8d2ff;margin:0 0 16px;font-size:1.1rem}
+.grid{display:grid;gap:16px}
+.grid.cols-3{grid-template-columns:repeat(3,1fr)}
+.grid.cols-2{grid-template-columns:repeat(2,1fr)}
+@media (max-width: 920px){
+  .hero{grid-template-columns:1fr}
+  .grid.cols-3{grid-template-columns:1fr 1fr}
+}
+@media (max-width: 640px){
+  .grid.cols-3{grid-template-columns:1fr}
+}
+.tile{padding:16px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.08);display:flex;gap:12px;align-items:flex-start}
+.tile .ico{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg, rgba(255,255,255,.28), rgba(255,255,255,.05));display:grid;place-items:center;font-weight:800;color:#0b1020}
+.tile h3{margin:2px 0 6px;font-size:1rem}
+.small{color:#cdd6ff;font-size:.95rem}
+.footer{padding:34px 20px;color:#a9b8ff;border-top:1px solid rgba(255,255,255,.08);margin-top:40px}
+.sidebar{position:sticky;top:70px;align-self:start}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:22px}
+@media (max-width: 960px){.layout{grid-template-columns:1fr}.sidebar{position:static}}
+.navlist{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.navlist a{display:block;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.navlist a.active{background:linear-gradient(135deg,#6f8eff,#87a7ff);color:#0b1020;font-weight:700;border:none}
+.banner-mail{display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:12px;background:linear-gradient(90deg, rgba(156,255,199,.2), rgba(135,167,255,.15));border:1px solid rgba(255,255,255,.12);box-shadow:var(--shadow)}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
+.table{width:100%;border-collapse:separate;border-spacing:0 10px}
+.table th{font-weight:700;color:#c8d2ff;text-align:left;padding:8px 10px}
+.table td{padding:14px 12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.table tr td:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
+.table tr td:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
+.toast{position:fixed;right:20px;bottom:20px;padding:14px 16px;border-radius:12px;background:linear-gradient(135deg,#87a7ff,#9cffc7);color:#0b1020;font-weight:800;box-shadow:var(--shadow);display:none}
+.toast.show{display:block;animation:pop .4s ease}
+@keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+.input, select, textarea{width:100%;padding:12px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--ink)}
+label{display:block;margin:14px 0 6px;color:#cfe0ff}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:720px){.form-row{grid-template-columns:1fr}}
+hr.sep{border:none;border-top:1px solid rgba(255,255,255,.1);margin:20px 0}
+.tag{font-size:.8rem;color:#0b1020;background:var(--warning);border-radius:999px;padding:4px 10px;font-weight:700}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-badge">AI</div>
+      <div>
+        <strong>Portal</strong><div class="small" style="margin-top:-2px">Your AI-era home screen</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="#home" data-link>Home</a>
+      <a href="#dashboard" data-link>Dashboard</a>
+      <a href="#apps" data-link>Apps</a>
+      <a href="#mail" data-link>Mail</a>
+      <a href="#automations" data-link>Automations</a>
+      <a href="#marketplace" data-link>Marketplace</a>
+      <a href="#settings" data-link>Settings</a>
+      <a href="#about" data-link>About</a>
+      <a class="btn" href="javascript:void(0)" onclick="youveGotMail()">🔔 Notify</a>
+      <a class="btn primary" href="#dashboard" data-link>Open Portal</a>
+    </nav>
+  </div>
+</header>
+<div id="toast" class="toast">You've got mail!</div>
+
+<!-- Views -->
+<main id="home" class="view">
+  <section class="container hero">
+    <div>
+      <div class="kicker">Welcome</div>
+      <h1 class="h1">A modern portal for the AI era</h1>
+      <p class="sub">Think AOL’s cozy “You’ve got mail” energy, reimagined as your daily launchpad for AI tools, automations, and a personal inbox that actually helps.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">
+        <a class="btn primary" href="#dashboard" data-link>Enter Dashboard</a>
+        <a class="btn" href="#apps" data-link>Browse Apps</a>
+        <a class="btn" href="javascript:void(0)" onclick="youveGotMail()">🔔 Try the chime</a>
+      </div>
+      <div style="margin-top:16px" class="banner-mail">
+        <span class="tag">Beta</span>
+        <div><strong>Heads up:</strong> This is a clickable prototype. No sign‑in needed—play around freely.</div>
+      </div>
+    </div>
+    <div class="card pad">
+      <div class="kicker">Preview</div>
+      <h3 style="margin:6px 0 12px">What’s inside</h3>
+      <div class="grid cols-2">
+        <div class="tile"><div class="ico">💬</div><div><h3>Chat & Compose</h3><div class="small">Draft, translate, ideate, and summarize with built‑in AI agents.</div></div></div>
+        <div class="tile"><div class="ico">🖼️</div><div><h3>Images & Video</h3><div class="small">Generate visuals, mockups, and storyboards from prompts.</div></div></div>
+        <div class="tile"><div class="ico">⏰</div><div><h3>Automations</h3><div class="small">Set reminders, recurring checks, and smart digests.</div></div></div>
+        <div class="tile"><div class="ico">🧩</div><div><h3>Marketplace</h3><div class="small">Plug in tools for work, creativity, or home life—no code required.</div></div></div>
+      </div>
+    </div>
+  </section>
+  <div class="container">
+    <h3 style="margin:8px 0 10px">Why a portal?</h3>
+    <div class="grid cols-3">
+      <div class="card pad"><div class="kicker">One Home</div><h3>Everything in one spot</h3><p class="small">Launch daily tasks, not ten tabs. Centralize your AI workflows, files, and notifications.</p></div>
+      <div class="card pad"><div class="kicker">Automation</div><h3>Let it handle the busywork</h3><p class="small">Daily digests, smart pings, and hands‑off checks keep you focused on what matters.</p></div>
+      <div class="card pad"><div class="kicker">Nostalgia</div><h3>“You’ve got mail,” re‑imagined</h3><p class="small">A positive notification loop—useful alerts, intentional dopamine, less noise.</p></div>
+    </div>
+  </div>
+</main>
+
+<main id="dashboard" class="view hidden">
+  <div class="container layout">
+    <aside class="sidebar card pad">
+      <div class="kicker">Quick Start</div>
+      <ul class="navlist" style="margin-top:8px">
+        <li><a href="#apps" data-link>Find an app</a></li>
+        <li><a href="#automations" data-link>Set a reminder</a></li>
+        <li><a href="#mail" data-link>Open inbox</a></li>
+        <li><a href="#marketplace" data-link>Add a plugin</a></li>
+      </ul>
+      <hr class="sep"/>
+      <div class="banner-mail"><strong>Tip:</strong>&nbsp; Click the bell anytime to hear the mail chime.</div>
+    </aside>
+    <section>
+      <div class="grid cols-3">
+        <a class="tile" href="#apps" data-link><div class="ico">🔎</div><div><h3>Search apps</h3><div class="small">Browse curated AI tools and launchers.</div></div></a>
+        <a class="tile" href="#mail" data-link><div class="ico">📬</div><div><h3>Inbox</h3><div class="small">Smart newsletters, summaries, and action cards.</div></div></a>
+        <a class="tile" href="#automations" data-link><div class="ico">⏱️</div><div><h3>Automations</h3><div class="small">Daily digests, watchlists, and reminders.</div></div></a>
+        <a class="tile" href="#marketplace" data-link><div class="ico">🧩</div><div><h3>Marketplace</h3><div class="small">Extend the portal with plug‑and‑play tools.</div></div></a>
+        <a class="tile" href="#settings" data-link><div class="ico">⚙️</div><div><h3>Settings</h3><div class="small">Theme, privacy, and data preferences.</div></div></a>
+        <a class="tile" href="#about" data-link><div class="ico">📗</div><div><h3>About</h3><div class="small">What this prototype is and where it could go.</div></div></a>
+      </div>
+      <div class="card pad" style="margin-top:16px">
+        <div class="kicker">Today</div>
+        <h3 style="margin:8px 0 12px">Personalized Launchpad</h3>
+        <table class="table">
+          <thead><tr><th>Item</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>Morning Brief</td><td>Ready</td><td><a class="btn" href="#mail" data-link>Open</a></td></tr>
+            <tr><td>Design Sprint Notes</td><td>Draft saved</td><td><a class="btn" href="#apps" data-link>Continue in Composer</a></td></tr>
+            <tr><td>Weekly Automation</td><td>Runs Friday</td><td><a class="btn" href="#automations" data-link>Edit</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</main>
+
+<main id="apps" class="view hidden">
+  <div class="container">
+    <div class="card pad">
+      <div class="kicker">Directory</div>
+      <h1 class="h1" style="font-size:32px">Apps & Launchers</h1>
+      <p class="small">Search and launch tools. This is a mock—click to see sample flows.</p>
+      <div class="form-row" style="margin-top:8px">
+        <div><label>Search</label><input id="q" class="input" placeholder="chat, image, audio, automate…" oninput="searchApps()"/></div>
+        <div><label>Category</label>
+          <select class="input" onchange="searchApps()">
+            <option>All</option><option>Chat</option><option>Images</option><option>Audio</option><option>Automation</option><option>Office</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="grid cols-3" style="margin-top:16px">
+      <a class="tile app-card" data-tags="chat compose write summarize" href="#about" data-link>
+        <div class="ico">💬</div><div><h3>Universal Chat</h3><div class="small">Ask, draft, translate, summarize.</div></div>
+      </a>
+      <a class="tile app-card" data-tags="image generate design mockup" href="#about" data-link>
+        <div class="ico">🖼️</div><div><h3>Image Studio</h3><div class="small">Concept art, logos, mockups.</div></div>
+      </a>
+      <a class="tile app-card" data-tags="audio podcast transcription" href="#about" data-link>
+        <div class="ico">🎙️</div><div><h3>Audio Desk</h3><div class="small">Record, transcribe, and edit.</div></div>
+      </a>
+      <a class="tile app-card" data-tags="automation n8n zapier" href="#automations" data-link>
+        <div class="ico">⚙️</div><div><h3>Automations</h3><div class="small">Triggers, schedules, and watchlists.</div></div>
+      </a>
+      <a class="tile app-card" data-tags="documents notes notion" href="#about" data-link>
+        <div class="ico">🗂️</div><div><h3>Docs & Boards</h3><div class="small">Write, plan, and track work.</div></div>
+      </a>
+      <a class="tile app-card" data-tags="marketplace plugins extensions" href="#marketplace" data-link>
+        <div class="ico">🧩</div><div><h3>Marketplace</h3><div class="small">Add integrations and extensions.</div></div>
+      </a>
+    </div>
+  </div>
+</main>
+
+<main id="mail" class="view hidden">
+  <div class="container layout">
+    <aside class="sidebar card pad">
+      <div class="kicker">Folders</div>
+      <ul class="navlist" style="margin-top:8px">
+        <li><a class="active" href="#mail" data-link>Inbox</a></li>
+        <li><a href="#mail" data-link>Starred</a></li>
+        <li><a href="#mail" data-link>Newsletters</a></li>
+        <li><a href="#mail" data-link>Automation</a></li>
+      </ul>
+      <hr class="sep"/>
+      <button class="btn" onclick="youveGotMail()">Play chime</button>
+    </aside>
+    <section>
+      <div class="banner-mail" style="margin-bottom:12px"><strong>Inbox</strong>&nbsp;— prioritized summaries, less noise.</div>
+      <table class="table">
+        <thead><tr><th>From</th><th>Subject</th><th>When</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>AI Briefing</td><td>Morning digest: 5 key updates</td><td>Today</td><td><a class="btn" href="#mail" data-link onclick="youveGotMail()">Open</a></td></tr>
+          <tr><td>Design Bot</td><td>3 new concepts for your homepage</td><td>Today</td><td><a class="btn" href="#mail" data-link onclick="youveGotMail()">Open</a></td></tr>
+          <tr><td>Automation</td><td>Weekly check: flight prices to SFO</td><td>Yesterday</td><td><a class="btn" href="#mail" data-link onclick="youveGotMail()">Open</a></td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</main>
+
+<main id="automations" class="view hidden">
+  <div class="container layout">
+    <aside class="sidebar card pad">
+      <div class="kicker">Examples</div>
+      <ul class="navlist" style="margin-top:8px">
+        <li><a class="active" href="#automations" data-link>Daily brief (9am)</a></li>
+        <li><a href="#automations" data-link>Price watch (hourly)</a></li>
+        <li><a href="#automations" data-link>Inbox summary (5pm)</a></li>
+      </ul>
+      <hr class="sep"/>
+      <div class="small">This is a demo; saves to your browser if you export.</div>
+    </aside>
+    <section>
+      <div class="grid cols-2">
+        <form class="card pad" onsubmit="saveAutomation(event)">
+          <div class="kicker">Create</div>
+          <h3 style="margin:8px 0 12px">New Automation</h3>
+          <label>Title</label>
+          <input class="input" name="title" placeholder="e.g., Daily AI Brief" required/>
+          <div class="form-row">
+            <div>
+              <label>When</label>
+              <input class="input" name="when" placeholder="Every weekday at 9am"/>
+            </div>
+            <div>
+              <label>Notify via</label>
+              <select class="input" name="channel">
+                <option>In‑app</option>
+                <option>Email</option>
+                <option>SMS</option>
+              </select>
+            </div>
+          </div>
+          <label>Details</label>
+          <textarea class="input" name="details" rows="5" placeholder="Summarize Tech + AI news, top launches on Product Hunt, and my calendar for today."></textarea>
+          <div style="margin-top:12px;display:flex;gap:10px">
+            <button class="btn primary" type="submit">Save</button>
+            <a class="btn" href="javascript:renderAutomations()">Refresh</a>
+          </div>
+        </form>
+        <div id="autos" class="card pad"><p class="small">No automations yet. Create one with the form on the left.</p></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<main id="marketplace" class="view hidden">
+  <div class="container">
+    <div class="card pad">
+      <div class="kicker">Extensions</div>
+      <h1 class="h1" style="font-size:32px">Marketplace</h1>
+      <p class="small">Add plug‑ins to expand your portal. Click a card to “install” (demo only).</p>
+    </div>
+    <div class="grid cols-3" style="margin-top:16px">
+      <div class="tile" onclick="showToast('Installed: Notion Sync')"><div class="ico">🧠</div><div><h3>Notion Sync</h3><div class="small">Sync pages and databases to your portal.</div></div></div>
+      <div class="tile" onclick="showToast('Installed: Google Drive')"><div class="ico">📁</div><div><h3>Google Drive</h3><div class="small">Attach, search, and summarize files.</div></div></div>
+      <div class="tile" onclick="showToast('Installed: n8n Bridge')"><div class="ico">🔗</div><div><h3>n8n Bridge</h3><div class="small">Trigger automations via webhooks.</div></div></div>
+      <div class="tile" onclick="showToast('Installed: Chewy Deals')"><div class="ico">🐾</div><div><h3>Chewy Deals</h3><div class="small">Pull pet promos into your daily brief.</div></div></div>
+      <div class="tile" onclick="showToast('Installed: Social Scheduler')"><div class="ico">📅</div><div><h3>Social Scheduler</h3><div class="small">Queue posts across platforms.</div></div></div>
+      <div class="tile" onclick="showToast('Installed: Voice Dictation')"><div class="ico">🎤</div><div><h3>Voice Dictation</h3><div class="small">Hands‑free notes and commands.</div></div></div>
+    </div>
+  </div>
+</main>
+
+<main id="settings" class="view hidden">
+  <div class="container layout">
+    <aside class="sidebar card pad">
+      <div class="kicker">Sections</div>
+      <ul class="navlist" style="margin-top:8px">
+        <li><a class="active" href="#settings" data-link>General</a></li>
+        <li><a href="#settings" data-link>Notifications</a></li>
+        <li><a href="#settings" data-link>Privacy</a></li>
+      </ul>
+    </aside>
+    <section>
+      <div class="card pad">
+        <div class="kicker">Appearance</div>
+        <div class="form-row">
+          <div>
+            <label>Theme</label>
+            <select class="input"><option>Dark</option><option>Light</option></select>
+          </div>
+          <div>
+            <label>Compact mode</label>
+            <select class="input"><option>Off</option><option>On</option></select>
+          </div>
+        </div>
+        <hr class="sep"/>
+        <div class="kicker">Notifications</div>
+        <div class="form-row">
+          <div>
+            <label>Mail chime</label>
+            <select class="input"><option>On</option><option>Off</option></select>
+          </div>
+          <div>
+            <label>Daily brief</label>
+            <select class="input"><option>9:00 AM</option><option>8:00 AM</option><option>Off</option></select>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<main id="about" class="view hidden">
+  <div class="container">
+    <div class="card pad">
+      <div class="kicker">Prototype</div>
+      <h1 class="h1" style="font-size:32px">What is this?</h1>
+      <p class="small">This single‑file preview imagines a modern “portal” for the AI era—an approachable place to start your day, launch tools, and get useful notifications (with an optional nostalgic nod to “You’ve got mail”).</p>
+    </div>
+    <div class="grid cols-3" style="margin-top:16px">
+      <div class="card pad"><h3>Universal Chat</h3><p class="small">One interface that routes prompts to the right model or agent. Draft emails, summarize documents, generate outlines, and translate.</p></div>
+      <div class="card pad"><h3>Image Studio</h3><p class="small">Prompt‑to‑image and quick mockups. Think logos, thumbnails, storyboards, and concept art for pitches.</p></div>
+      <div class="card pad"><h3>Audio Desk</h3><p class="small">Record ideas, transcribe calls, and produce podcast‑ready edits with AI assistance.</p></div>
+      <div class="card pad"><h3>Docs & Boards</h3><p class="small">Your notes, documents, and kanban boards in one place—summaries and action items on tap.</p></div>
+      <div class="card pad"><h3>Automations</h3><p class="small">From daily digests to price monitors. In a real build, these would use schedulers and webhooks (e.g., n8n + email/SMS).</p></div>
+      <div class="card pad"><h3>Marketplace</h3><p class="small">A plug‑in layer to hook into your favorite tools: Notion, Drive, Slack, social platforms, etc.</p></div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between">
+      <div>© 2025 AI Portal Prototype • Built for exploration</div>
+      <div class="small">Tip: Hit the bell to trigger the nostalgic “You’ve got mail” moment.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Router
+const views = Array.from(document.querySelectorAll('.view'));
+function setRoute(){
+  const hash = location.hash.replace('#','') || 'home';
+  views.forEach(v => v.classList.toggle('hidden', v.id !== hash));
+  // highlight nav
+  document.querySelectorAll('[data-link]').forEach(a=>{
+    const target=(a.getAttribute('href')||'').replace('#','');
+    if(!target) return;
+    if(target===hash){ a.classList.add('active') } else { a.classList.remove('active') }
+  });
+}
+window.addEventListener('hashchange', setRoute);
+setRoute();
+
+// Chime + toast
+function playChime(){
+  try{
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const o=ctx.createOscillator();
+    const g=ctx.createGain();
+    o.type='sine'; o.frequency.value=880;
+    o.connect(g); g.connect(ctx.destination);
+    g.gain.setValueAtTime(0.0, ctx.currentTime);
+    g.gain.linearRampToValueAtTime(0.25, ctx.currentTime+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+0.6);
+    o.start(); o.stop(ctx.currentTime+0.62);
+    setTimeout(()=>{
+      const o2=ctx.createOscillator(); const g2=ctx.createGain();
+      o2.type='sine'; o2.frequency.value=1318.5;
+      o2.connect(g2); g2.connect(ctx.destination);
+      g2.gain.setValueAtTime(0.0, ctx.currentTime);
+      g2.gain.linearRampToValueAtTime(0.22, ctx.currentTime+0.01);
+      g2.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+0.5);
+      o2.start(); o2.stop(ctx.currentTime+0.52);
+    }, 220);
+  }catch(e){}
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+function youveGotMail(){ playChime(); showToast("You've got mail!"); }
+
+// Automations (in-memory for preview)
+let autos=[];
+function saveAutomation(e){
+  e.preventDefault();
+  const f=e.target;
+  autos.push({
+    title:f.title.value,
+    when:f.when.value,
+    channel:f.channel.value,
+    details:f.details.value,
+    created:new Date().toISOString()
+  });
+  f.reset();
+  renderAutomations();
+  showToast('Automation saved');
+}
+function renderAutomations(){
+  const wrap=document.getElementById('autos');
+  if(!wrap) return;
+  if(!autos.length){ wrap.innerHTML='<p class="small">No automations yet. Create one with the form on the left.</p>'; return; }
+  wrap.innerHTML = autos.map((a,i)=>`
+    <div class="tile">
+      <div class="ico">⚙️</div>
+      <div>
+        <h3>${a.title}</h3>
+        <div class="small">${a.details||'—'}</div>
+        <div class="small" style="margin-top:6px;">
+          <span class="badge">When: ${a.when||'—'}</span>
+          <span class="badge">Channel: ${a.channel}</span>
+        </div>
+        <div style="margin-top:8px;"><button class="btn" onclick="delAuto(${i})">Delete</button></div>
+      </div>
+    </div>
+  `).join('');
+}
+function delAuto(i){ autos.splice(i,1); renderAutomations(); }
+renderAutomations();
+
+// Search apps
+function searchApps(){
+  const q=(document.getElementById('q')?.value || '').toLowerCase();
+  document.querySelectorAll('.app-card').forEach(card=>{
+    const hay=(card.dataset.tags||'')+' '+card.innerText.toLowerCase();
+    card.style.display = hay.includes(q) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>

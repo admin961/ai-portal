@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Nostalgic Chime Test</title>
+<style>
+  html,body{height:100%;margin:0;background:#0b1020;color:#e8ecff;font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+  .wrap{min-height:100%;display:grid;place-items:center;padding:24px}
+  .card{max-width:560px;width:100%;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:22px;box-shadow:0 10px 32px rgba(0,0,0,.28), 0 2px 10px rgba(0,0,0,.22)}
+  h1{margin:0 0 6px}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#e8ecff;cursor:pointer}
+  .btn:hover{transform:translateY(-1px)}
+  .btn.primary{background:linear-gradient(135deg,#6f8eff,#87a7ff);color:#0b1020;border:none;font-weight:800}
+  .small{color:#cdd6ff}
+  code{background:rgba(255,255,255,.08);padding:2px 6px;border-radius:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1>🔔 Nostalgic Chime Test</h1>
+    <p class="small">Click the button below to play the two‑note “You’ve got mail” style chime. Works in Chrome, Edge, Safari, and Firefox (requires user interaction).</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px">
+      <button class="btn primary" onclick="playChime()">Play chime</button>
+      <button class="btn" onclick="playAlt()">Play extended (3‑note)</button>
+      <button class="btn" onclick="stopAll()">Stop</button>
+    </div>
+    <div class="small">If you don’t hear anything, check that your device isn’t muted and that the page has focus. Some browsers block audio until after a click.</div>
+    <hr style="border:none;border-top:1px solid rgba(255,255,255,.12);margin:16px 0">
+    <details>
+      <summary>Show code</summary>
+      <pre class="small"><code>&lt;script&gt;
+function chime(notes=[880,1318.5]){
+  const ctx=new (window.AudioContext||window.webkitAudioContext)();
+  const now=ctx.currentTime;
+  notes.forEach((freq,i)=>{
+    const o=ctx.createOscillator();
+    const g=ctx.createGain();
+    o.type='sine'; o.frequency.value=freq;
+    o.connect(g); g.connect(ctx.destination);
+    g.gain.setValueAtTime(0, now + i*0.22);
+    g.gain.linearRampToValueAtTime(0.25, now + i*0.22 + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + i*0.22 + 0.5);
+    o.start(now + i*0.22); o.stop(now + i*0.22 + 0.52);
+  });
+}
+&lt;/script&gt;</code></pre>
+    </details>
+  </div>
+</div>
+
+<script>
+let _ctx;
+function getCtx(){ _ctx = _ctx || new (window.AudioContext||window.webkitAudioContext)(); return _ctx; }
+function playNotes(notes=[880,1318.5]){
+  const ctx=getCtx();
+  const now=ctx.currentTime;
+  notes.forEach((freq,i)=>{
+    const o=ctx.createOscillator();
+    const g=ctx.createGain();
+    o.type='sine'; o.frequency.value=freq;
+    o.connect(g); g.connect(ctx.destination);
+    g.gain.setValueAtTime(0, now + i*0.22);
+    g.gain.linearRampToValueAtTime(0.24, now + i*0.22 + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + i*0.22 + 0.5);
+    o.start(now + i*0.22); o.stop(now + i*0.22 + 0.52);
+  });
+}
+function playChime(){ playNotes([880,1318.5]); }           // A5 → E6
+function playAlt(){ playNotes([784,880,1318.5]); }         // G5 → A5 → E6 (warmer)
+function stopAll(){ try{ getCtx().close(); _ctx=null; }catch(e){} }
+</script>
+</body>
+</html>
