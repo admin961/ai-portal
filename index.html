@@ -2,431 +2,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Build Your Own AI Helper — Simple Step‑by‑Step Guide</title>
-<style>
-:root{
-  --bg:#0b1020; --bg2:#10214a; --ink:#ffffff; --muted:#cfe0ff;
-  --card:rgba(255,255,255,.08); --border:rgba(255,255,255,.14);
-  --accent1:#8ad8ff; --accent2:#a7ffb3; --accent3:#ffd27a; --accent4:#ff9aa2;
-  --shadow:0 10px 28px rgba(0,0,0,.32), 0 2px 8px rgba(0,0,0,.2);
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--ink);font:18px/1.6 ui-rounded,system-ui,Segoe UI,Roboto,Inter,Arial,sans-serif}
-a{color:#bfe0ff;text-decoration:none}
-a:hover{text-decoration:underline}
-.header{position:sticky;top:0;z-index:10;background:rgba(15,25,55,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
-.header-inner{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:12px}
-.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:grid;place-items:center;color:#0b1020;font-weight:900;box-shadow:var(--shadow)}
-.title{font-weight:900}
-.container{max-width:1100px;margin:0 auto;padding:26px 18px}
-.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:22px;align-items:center}
-@media (max-width: 900px){.hero{grid-template-columns:1fr}}
-.card{background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.06));border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow)}
-.pad{padding:20px}
-.kicker{letter-spacing:.14em;text-transform:uppercase;font-size:.85rem;color:var(--muted)}
-.h1{font-size:clamp(28px,4.2vw,44px);line-height:1.1;margin:8px 0 6px;font-weight:900}
-.h2{font-size:clamp(22px,3.4vw,32px);line-height:1.15;margin:8px 0 8px;font-weight:850}
-.sub{color:#e6f0ff}
-.badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.10);border:1px solid var(--border);font-size:.9rem}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,.10);color:var(--ink);cursor:pointer;box-shadow:var(--shadow)}
-.btn.primary{background:linear-gradient(135deg,#6fc3ff,#87ffa9);color:#0b1020;border:none;font-weight:900}
-.btn:hover{transform:translateY(-1px)}
-.grid{display:grid;gap:16px}
-.cols-2{grid-template-columns:1fr 1fr}
-.cols-3{grid-template-columns:repeat(3,1fr)}
-@media (max-width: 900px){.cols-2{grid-template-columns:1fr}.cols-3{grid-template-columns:1fr}}
-
-.step{display:grid;grid-template-columns:56px 1fr;gap:12px;align-items:flex-start;padding:16px;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid var(--border)}
-.step .num{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--accent3),var(--accent1));display:grid;place-items:center;color:#0b1020;font-weight:900;font-size:22px}
-.step h3{margin:0 0 6px}
-.icon{font-size:28px;display:inline-grid;place-items:center;width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.14);border:1px solid var(--border)}
-.flow{display:grid;gap:10px;margin-top:10px}
-.flow-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center}
-.node{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.10);border:1px solid var(--border)}
-.arrow{opacity:.8}
-.small{color:#d6e6ff;font-size:.95rem}
-code.inline{background:rgba(255,255,255,.14);padding:2px 6px;border-radius:6px}
-.tabbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
-.tabbar .tab{padding:8px 12px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.08);cursor:pointer}
-.tabbar .tab.active{background:linear-gradient(135deg,#ffd27a,#ffefb0);color:#0b1020;font-weight:900}
-.box{padding:14px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid var(--border)}
-ul.check{list-style:none;padding:0;margin:0}
-ul.check li{margin:8px 0;padding-left:30px;position:relative}
-ul.check li:before{content:"✓";position:absolute;left:6px;top:0;background:linear-gradient(135deg,#9cffc7,#87a7ff);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:900}
-hr.sep{border:none;border-top:1px solid var(--border);margin:18px 0}
-.footer{color:#bcd0ff;border-top:1px solid var(--border);padding:28px 18px;margin-top:24px}
-.alert{padding:12px 14px;border-radius:12px;background:linear-gradient(135deg, rgba(255,210,122,.25), rgba(255,154,162,.25));border:1px solid var(--border)}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Portal - Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        header nav {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        header nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        header nav a:hover {
+            text-decoration: underline;
+        }
+        main {
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+        }
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
 <body>
-<header class="header">
-  <div class="header-inner">
-    <div class="logo">AI</div>
-    <div class="title">Build Your Own AI Helper</div>
-<nav style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0">
-  <a class="btn" href="AI_Portal_Preview.html#dashboard">Dashboard</a>
-  <a class="btn" href="AI_Portal_EnterDashboard.html">Enter Dashboard</a>
-  <a class="btn" href="AI_Portal_About_And_Sales.html">About & How It Works</a>
-  <a class="btn" href="AI_Automation_Website_Preview.html">Automation Guide</a>
-  <a class="btn" href="Nostalgic_Chime_Test.html">Chime Test</a>
-</nav>
-
-    <div style="margin-left:auto;display:flex;gap:10px;flex-wrap:wrap">
-      <span class="badge">Kid‑friendly</span>
-      <button class="btn" onclick="window.print()">🖨️ Print</button>
-      <a class="btn primary" href="#start">Start here</a>
-    </div>
-  </div>
-</header>
-
-<section class="container hero">
-  <div>
-    <div class="kicker">Easy Mode</div>
-    <h1 class="h1">Let’s make a tiny robot that helps you!</h1>
-    <p class="sub">We will build an “AI helper” that reads stuff, makes short notes, and does small jobs for you. We’ll use tools you may already know. We keep the words simple. We go step by step.</p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-      <a class="btn primary" href="#start">Start the steps</a>
-      <a class="btn" href="#flow">See the picture map</a>
-    </div>
-  </div>
-  <div class="card pad">
-    <div class="kicker">What we will build</div>
-    <div class="flow">
-      <div class="flow-row">
-        <div class="node">📧 Email</div><span class="arrow">→</span>
-        <div class="node">📁 Files</div><span class="arrow">→</span>
-        <div class="node">🗒️ Notes</div><span class="arrow">→</span>
-        <div class="node">🌐 Web</div><span class="arrow">→</span>
-        <div class="node">🔌 APIs</div>
-      </div>
-      <div class="flow-row"><span class="arrow">↓↓</span></div>
-      <div class="flow-row">
-        <div class="node">🔍 Read & OCR</div><span class="arrow">→</span>
-        <div class="node">🧠 Summarize</div><span class="arrow">→</span>
-        <div class="node">🗂️ Tag</div><span class="arrow">→</span>
-        <div class="node">🎯 Sort</div>
-      </div>
-      <div class="flow-row"><span class="arrow">↓↓</span></div>
-      <div class="flow-row">
-        <div class="node">🚀 Do things (reply / schedule / draft / file / notify)</div>
-      </div>
-      <div class="flow-row"><span class="arrow">↓↓</span></div>
-      <div class="flow-row">
-        <div class="node">📰 Daily Brief</div><span class="arrow">→</span>
-        <div class="node">📬 Inbox with Buttons</div><span class="arrow">→</span>
-        <div class="node">📘 Log Book</div>
-      </div>
-    </div>
-    <p class="small" style="margin-top:8px">This picture map shows the whole trip. We will walk it slowly.</p>
-  </div>
-</section>
-
-<section id="start" class="container">
-  <div class="card pad">
-    <div class="kicker">Step by Step</div>
-    <h2 class="h2">Step 1 — Pick your tools (you can mix & match)</h2>
-    <div class="grid cols-3">
-      <div class="box"><div class="icon">📧</div><strong>Email:</strong> Gmail or Outlook</div>
-      <div class="box"><div class="icon">📁</div><strong>Files:</strong> Google Drive, Dropbox, or OneDrive</div>
-      <div class="box"><div class="icon">🗒️</div><strong>Notes:</strong> Notion, Evernote, or Google Docs</div>
-      <div class="box"><div class="icon">🤖</div><strong>AI:</strong> OpenAI or your favorite model</div>
-      <div class="box"><div class="icon">🗓️</div><strong>Calendar:</strong> Google or Microsoft</div>
-      <div class="box"><div class="icon">⚙️</div><strong>Automation:</strong> Zapier, IFTTT, Make, or n8n</div>
-    </div>
-    <p class="small" style="margin-top:6px">Don’t worry. Any mix is okay. We will show recipes for each.</p>
-  </div>
-</section>
-
-<section class="container">
-  <div class="card pad">
-    <h2 class="h2">Step 2 — Make one folder to watch</h2>
-    <div class="grid cols-2">
-      <div class="box">
-        <p><strong>Why?</strong> Put new files here (PDFs, images). Your robot will look in this folder.</p>
-        <ul class="check">
-          <li>Create folder named <code class="inline">/INBOX</code></li>
-          <li>Drop a PDF or screenshot inside</li>
-          <li>We will read it later</li>
-        </ul>
-      </div>
-      <div class="box">
-        <p><strong>Bonus:</strong> Make an email label “Newsletters”. Move interesting emails there.</p>
-        <ul class="check">
-          <li>Gmail/Outlook: create label/folder</li>
-          <li>Move 2 emails into it</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="container">
-  <div class="card pad">
-    <h2 class="h2">Step 3 — Choose your automation tool</h2>
-    <div class="tabbar">
-      <button class="tab active" data-tab="zapier" onclick="showTab('zapier')">Zapier</button>
-      <button class="tab" data-tab="ifttt" onclick="showTab('ifttt')">IFTTT</button>
-      <button class="tab" data-tab="make" onclick="showTab('make')">Make</button>
-      <button class="tab" data-tab="n8n" onclick="showTab('n8n')">n8n</button>
-    </div>
-    <div id="zapier" class="tabpane">
-      <div class="grid cols-2">
-        <div class="box">
-          <strong>Zap 1 — Get things in</strong>
-          <ul class="check">
-            <li>Trigger: New email in label “Newsletters”</li>
-            <li>Action: Add to Notes (Notion/Docs) as “Inbox Item”</li>
-            <li>Action: If attachment → send to OCR step</li>
-          </ul>
+    <header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="news.html">Top Stories</a>
+            <a href="explore.html">Explore</a>
+            <a href="labs.html">Labs</a>
+            <a href="roadmap.html">Roadmap</a>
+            <a href="help.html">Help</a>
+            <a href="AI_Portal_EnterDashboard.html">Dashboard</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Welcome to the AI Portal</h1>
+        <div class="card">
+            <p>This is your central hub for exploring AI-powered tools, news, experiments, and upcoming features.</p>
+            <p>Use the navigation above to explore different sections of the site.</p>
         </div>
-        <div class="box">
-          <strong>Zap 2 — Read & Summarize</strong>
-          <ul class="check">
-            <li>Trigger: New item in “Inbox Items”</li>
-            <li>Action: OpenAI — make 5 short bullets + tags</li>
-            <li>Action: Update the “Inbox Item” with summary + tags</li>
-          </ul>
+        <div class="card">
+            <h2>Quick Links</h2>
+            <ul>
+                <li><a href="news.html">Read Today's Top Stories</a></li>
+                <li><a href="explore.html">Discover More Tools</a></li>
+                <li><a href="labs.html">Try AI Experiments</a></li>
+                <li><a href="roadmap.html">See What's Coming Next</a></li>
+                <li><a href="help.html">Get Help & FAQs</a></li>
+            </ul>
         </div>
-        <div class="box">
-          <strong>Zap 3 — Sort & Decide</strong>
-          <ul class="check">
-            <li>Trigger: Item updated with summary</li>
-            <li>Action: Paths (rules): if “invoice” → P0 + Reply; if “flight &lt; $250” → Notify; else P2</li>
-          </ul>
-        </div>
-        <div class="box">
-          <strong>Zap 4 — Do the thing</strong>
-          <ul class="check">
-            <li>If Reply → send email draft</li>
-            <li>If Schedule → add event to Calendar</li>
-            <li>If Draft → create Doc + link it</li>
-            <li>If File → move file in Drive</li>
-            <li>If Notify → email/text yourself</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div id="ifttt" class="tabpane" style="display:none">
-      <div class="grid cols-2">
-        <div class="box">
-          <strong>Applet A — Inbox</strong>
-          <ul class="check">
-            <li>If email in “Newsletters” → add to Notes</li>
-            <li>If file in /INBOX → run OCR</li>
-          </ul>
-        </div>
-        <div class="box">
-          <strong>Applet B — Summaries</strong>
-          <ul class="check">
-            <li>If new Note → call AI (Webhook) → get 5 bullets</li>
-            <li>Then update the Note with tags</li>
-          </ul>
-        </div>
-        <div class="box">
-          <strong>Applet C — Actions</strong>
-          <ul class="check">
-            <li>If tag “P0” → send quick alert</li>
-            <li>If tag “Reply” → draft email</li>
-          </ul>
-        </div>
-        <div class="box">
-          <strong>Applet D — Brief</strong>
-          <ul class="check">
-            <li>Every day at 9am → build a daily note</li>
-            <li>Add top 5 and urgent items</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div id="make" class="tabpane" style="display:none">
-      <div class="grid cols-2">
-        <div class="box">
-          <strong>Scenario 1 — Ingest</strong>
-          <ul class="check">
-            <li>Watch Gmail label + Watch Drive folder</li>
-            <li>Route PDFs to OCR → text</li>
-            <li>Create/Update item in Notion/Docs</li>
-          </ul>
-        </div>
-        <div class="box">
-          <strong>Scenario 2 — Summarize</strong>
-          <ul class="check">
-            <li>OpenAI/HTTP — summarize to 5 bullets + tags</li>
-            <li>Write tags & priority back</li>
-          </ul>
-        </div>
-        <div class="box">
-          <strong>Scenario 3 — Decide</strong>
-          <ul class="check">
-            <li>Routers/Filters: if “invoice” → P0 + Reply</li>
-            <li>Else if “launch” → P1 + Draft</li>
-          </ul>
-        </div>
-        <div class="box">
-          <strong>Scenario 4 — Act</strong>
-          <ul class="check">
-            <li>Send email / create event / move file</li>
-            <li>Log to a “Log Book” table</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div id="n8n" class="tabpane" style="display:none">
-      <div class="grid cols-2">
-        <div class="box">
-          <strong>Flow A — Ingest & OCR</strong>
-          <ul class="check">
-            <li>IMAP Email → If attachment → OCR</li>
-            <li>Drive Trigger → OCR → Add to Notion</li>
-          </ul>
-        </div>
-        <div class="box">
-          <strong>Flow B — Summarize & Tag</strong>
-          <ul class="check">
-            <li>OpenAI node → 5 bullets + entities</li>
-            <li>Update record in Notion</li>
-          </ul>
-        </div>
-        <div class="box">
-          <strong>Flow C — Decide</strong>
-          <ul class="check">
-            <li>IF nodes for rules (P0/P1/P2)</li>
-            <li>Optional: second AI check</li>
-          </ul>
-        </div>
-        <div class="box">
-          <strong>Flow D — Actions</strong>
-          <ul class="check">
-            <li>Send email / calendar / doc / move file / notify</li>
-            <li>Write to “Log Book” database</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="container">
-  <div class="card pad">
-    <h2 class="h2">Step 4 — Make your Daily Brief (9:00 AM)</h2>
-    <div class="grid cols-2">
-      <div class="box">
-        <p><strong>What:</strong> A tiny morning report with: 5 highlights, urgent items, calendar changes, top links.</p>
-        <ul class="check">
-          <li>Schedule: every day at 9:00 AM</li>
-          <li>Send to: your email (and phone if you want)</li>
-        </ul>
-      </div>
-      <div class="box">
-        <p><strong>Prompt:</strong></p>
-        <pre class="small">Make a morning brief with: 5 highlights, decisions needed (P0),
-schedule changes, and top links. Be short. Use bullets.</pre>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="container">
-  <div class="card pad">
-    <h2 class="h2">Step 5 — Make your Inbox with Buttons</h2>
-    <div class="grid cols-2">
-      <div class="box">
-        <p><strong>Simple way:</strong> Use a Kanban board in Notion, Trello, or your notes app.</p>
-        <ul class="check">
-          <li>Columns: P0 (now), P1 (soon), P2 (later)</li>
-          <li>Each card links back to the email or file</li>
-          <li>Add buttons: Approve, Snooze, Archive</li>
-        </ul>
-      </div>
-      <div class="box">
-        <p><strong>How the buttons work:</strong></p>
-        <ul class="check">
-          <li>Button → calls a Webhook</li>
-          <li>Webhook → runs a tiny automation</li>
-          <li>Automation → does the thing + logs it</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="container">
-  <div class="card pad">
-    <h2 class="h2">Step 6 — Keep a Log Book</h2>
-    <div class="grid cols-2">
-      <div class="box">
-        <p><strong>Why:</strong> So you can see what happened and undo things.</p>
-        <ul class="check">
-          <li>Make a table: When, What, Item, Result, Details</li>
-          <li>Write one row for every action</li>
-          <li>Export anytime</li>
-        </ul>
-      </div>
-      <div class="alert">
-        <strong>Privacy Tip:</strong> Give each tool only the smallest permissions it needs. Read‑only is best when you can.
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="container">
-  <div class="card pad">
-    <h2 class="h2">Copy‑Paste AI Prompts (tiny and clear)</h2>
-    <div class="grid cols-3">
-      <div class="box">
-        <strong>Summarize & Tag</strong>
-        <pre>Summarize this in 5 short bullets.
-List important names, dates, money.
-Suggest: P0 or P1 or P2.
-Suggest action: Reply, Schedule, Draft, File, or Notify.</pre>
-      </div>
-      <div class="box">
-        <strong>Write a Reply</strong>
-        <pre>Write a short, friendly reply.
-Goal: ______.
-3 short paragraphs + one-line TL;DR.</pre>
-      </div>
-      <div class="box">
-        <strong>Make the Brief</strong>
-        <pre>Make a brief: 5 highlights, decisions, schedule changes, top links.
-Use bullets. Be crisp.</pre>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="container">
-  <div class="card pad">
-    <h2 class="h2">You did it! 🎉 What now?</h2>
-    <div class="grid cols-2">
-      <div class="box">
-        <ul class="check">
-          <li>Turn on “Notify” first (easy wins)</li>
-          <li>Next, turn on “Draft” and “Schedule”</li>
-          <li>Last, add your “Inbox with Buttons” board</li>
-        </ul>
-      </div>
-      <div class="box">
-        <p><strong>Want more power later?</strong> Add extra rules like “If price &lt; $250 → alert” or “If ‘launch’ → create social post.”</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer class="footer">
-  <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
-    <div>© 2025 Build Your Own AI Helper — Simple Guide</div>
-    <div class="small">Made for beginners. Swap in your own tools anytime.</div>
-  </div>
-</footer>
-
-<script>
-function showTab(id){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===id));
-  document.querySelectorAll('.tabpane').forEach(p=>p.style.display = (p.id===id)?'block':'none');
-}
-</script>
+    </main>
 </body>
 </html>
