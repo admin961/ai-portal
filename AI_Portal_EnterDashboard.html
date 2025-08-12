@@ -2,228 +2,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>AI Portal — Enter Dashboard</title>
-<style>
-:root{
-  --bg:#0b1020; --bg2:#0e1430; --ink:#e8ecff; --muted:#a8b7ff;
-  --card: rgba(255,255,255,.04); --border: rgba(255,255,255,.08);
-  --accent1:#87a7ff; --accent2:#9cffc7; --warn:#ffd27a; --ok:#9cffc7; --bad:#ff9aa2;
-  --shadow: 0 8px 28px rgba(0,0,0,.28), 0 2px 8px rgba(0,0,0,.2);
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:linear-gradient(180deg,var(--bg),var(--bg2) 50%, #0a0f29 100%);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
-a{color:#cfe0ff;text-decoration:none}
-a:hover{opacity:.9;text-decoration:underline}
-.header{position:sticky;top:0;z-index:10;background:rgba(11,16,32,.7);backdrop-filter: blur(8px);border-bottom:1px solid var(--border)}
-.header-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:14px 18px}
-.logo-badge{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:grid;place-items:center;color:#0b1020;font-weight:900;box-shadow:var(--shadow)}
-.brand{font-weight:800}
-.container{max-width:1180px;margin:0 auto;padding:28px 18px}
-.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:center}
-@media (max-width: 940px){ .hero{grid-template-columns:1fr} }
-
-.card{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow)}
-.pad{padding:22px}
-.kicker{color:var(--muted);text-transform:uppercase;letter-spacing:.14em;font-size:.8rem}
-.h1{font-size:clamp(30px,4.6vw,52px);line-height:1.07;margin:8px 0 8px;font-weight:900}
-.sub{color:#cbd6ff;font-size:1.1rem;margin:0 0 8px}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.05);color:var(--ink);cursor:pointer;box-shadow:var(--shadow)}
-.btn:hover{transform:translateY(-1px)}
-.btn.primary{background:linear-gradient(135deg,#6f8eff,#87a7ff);color:#0b1020;border:none;font-weight:800}
-.btn.ghost{background:rgba(255,255,255,.03)}
-.badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--border);font-size:.86rem}
-
-.grid{display:grid;gap:16px}
-.cols-3{grid-template-columns:repeat(3,1fr)}
-.cols-2{grid-template-columns:repeat(2,1fr)}
-@media (max-width: 940px){ .cols-3{grid-template-columns:1fr 1fr} }
-@media (max-width: 640px){ .cols-3{grid-template-columns:1fr} .cols-2{grid-template-columns:1fr} }
-
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-@media (max-width: 940px){ .kpis{grid-template-columns:1fr 1fr} }
-.kpi{padding:16px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));border:1px solid var(--border)}
-.kpi h3{margin:0 0 6px;font-size:.95rem;color:#cfe0ff}
-.kpi .num{font-size:28px;font-weight:900}
-.kpi.ok .num{color:var(--ok)} .kpi.warn .num{color:var(--warn)} .kpi.bad .num{color:var(--bad)}
-
-.tile{padding:16px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));border:1px solid var(--border);display:flex;gap:12px;align-items:flex-start}
-.tile .ico{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg, rgba(255,255,255,.28), rgba(255,255,255,.05));display:grid;place-items:center;color:#0b1020;font-weight:900}
-
-.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
-.list li{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--border)}
-
-.timeline{position:relative;padding-left:20px}
-.timeline:before{content:"";position:absolute;left:9px;top:0;bottom:0;width:2px;background:rgba(255,255,255,.12);border-radius:2px}
-.t-item{position:relative;margin:10px 0 10px 0;padding-left:18px}
-.t-item:before{content:"";position:absolute;left:-2px;top:3px;width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,#87a7ff,#9cffc7);box-shadow:0 0 0 3px rgba(255,255,255,.06)}
-
-.footer{color:#a9b8ff;border-top:1px solid var(--border);padding:30px 18px;margin-top:30px}
-.toast{position:fixed;right:20px;bottom:20px;padding:14px 16px;border-radius:12px;background:linear-gradient(135deg,#87a7ff,#9cffc7);color:#0b1020;font-weight:800;box-shadow:var(--shadow);display:none}
-.toast.show{display:block;animation:pop .4s ease}
-@keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
-.avatar{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#9cffc7,#87a7ff);display:grid;place-items:center;color:#0b1020;font-weight:900}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Portal - Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        header nav {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        header nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        header nav a:hover {
+            text-decoration: underline;
+        }
+        main {
+            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+        }
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .story-list {
+            list-style: none;
+            padding: 0;
+        }
+        .story-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+        }
+        .story-list li:last-child {
+            border-bottom: none;
+        }
+        .story-title {
+            font-weight: bold;
+            color: #0073e6;
+            text-decoration: none;
+        }
+        .story-title:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<header class="header">
-  <div class="header-inner">
-    <div class="logo-badge">AI</div>
-    <div class="brand">Portal</div>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
-      <span class="badge">Beta</span>
-      <button class="btn" onclick="mailChime()">🔔 Notify</button>
-      <a class="btn ghost" href="sandbox:/mnt/data/AI_Portal_Preview.html#dashboard" target="_blank">Open full preview ↗</a>
-      <div class="avatar" title="Profile">ZT</div>
-    </div>
-  </div>
-</header>
-
-<div id="toast" class="toast">You've got mail!</div>
-
-<section class="container hero">
-  <div>
-    <div class="kicker">Enter Dashboard</div>
-    <h1 class="h1">Your daily launchpad</h1>
-    <p class="sub">Centralize AI tools, messages, and automations. One click to get momentum—every day.</p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-      <a class="btn primary" href="#start">Start session</a>
-      <button class="btn" onclick="quickPlan()">⚡ Quick plan</button>
-      <button class="btn" onclick="mailChime()">🔔 Play chime</button>
-    </div>
-    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
-      <span class="badge">Daily Brief at 9:00 AM</span>
-      <span class="badge">2 automations armed</span>
-      <span class="badge">Private by default</span>
-    </div>
-  </div>
-  <div class="card pad">
-    <div class="kicker">At a glance</div>
-    <div class="kpis" style="margin-top:10px">
-      <div class="kpi ok"><h3>New mail</h3><div class="num">3</div><div class="small" style="color:#cfe0ff">2 priority • 1 promo</div></div>
-      <div class="kpi warn"><h3>Tasks due</h3><div class="num">5</div><div class="small" style="color:#cfe0ff">2 today • 3 this week</div></div>
-      <div class="kpi ok"><h3>Automations</h3><div class="num">7</div><div class="small" style="color:#cfe0ff">2 running now</div></div>
-      <div class="kpi ok"><h3>Plugins</h3><div class="num">6</div><div class="small" style="color:#cfe0ff">Notion • Drive • n8n</div></div>
-    </div>
-  </div>
-</section>
-
-<section id="start" class="container grid cols-2">
-  <div class="card pad">
-    <div class="kicker">Quick actions</div>
-    <div class="grid cols-3" style="margin-top:10px">
-      <button class="btn" onclick="toast('Opening Universal Chat…')">💬 Chat</button>
-      <button class="btn" onclick="toast('Launching Image Studio…')">🖼️ Image</button>
-      <button class="btn" onclick="toast('Recording with Audio Desk…')">🎙️ Audio</button>
-      <button class="btn" onclick="toast('Composing Morning Brief…')">📰 Brief</button>
-      <button class="btn" onclick="toast('Creating New Automation…')">⏱️ Automate</button>
-      <button class="btn" onclick="toast('Opening Marketplace…')">🧩 Add‑on</button>
-    </div>
-    <hr class="sep" style="border:none;border-top:1px solid var(--border);margin:18px 0"/>
-    <div class="kicker">Recent activity</div>
-    <ul class="list" style="margin-top:10px">
-      <li><span>Drafted “SitterSaver pitch — v2”</span><a href="#" onclick="toast('Opening draft…')">Open</a></li>
-      <li><span>Saved “Chewy Deals” plugin settings</span><a href="#" onclick="toast('Opening settings…')">Review</a></li>
-      <li><span>Image concept “Furbaby hero banner”</span><a href="#" onclick="toast('Opening image…')">View</a></li>
-    </ul>
-  </div>
-  <div class="card pad">
-    <div class="kicker">Today timeline</div>
-    <div class="timeline" style="margin-top:8px">
-      <div class="t-item"><strong>8:45 AM</strong> — Inbox triage (priority first)</div>
-      <div class="t-item"><strong>9:00 AM</strong> — Daily AI Brief chime</div>
-      <div class="t-item"><strong>11:00 AM</strong> — Design review: homepage concepts</div>
-      <div class="t-item"><strong>3:00 PM</strong> — Outreach: 3 local partners</div>
-      <div class="t-item"><strong>5:00 PM</strong> — Inbox summary + next‑day plan</div>
-    </div>
-    <hr class="sep" style="border:none;border-top:1px solid var(--border);margin:18px 0"/>
-    <div class="kicker">Onboarding checklist</div>
-    <ul class="list" style="margin-top:10px">
-      <li><span>Connect Notion workspace</span><button class="btn" onclick="markDone(this)">Connect</button></li>
-      <li><span>Add Daily Brief time</span><button class="btn" onclick="markDone(this)">Set 9:00 AM</button></li>
-      <li><span>Install 2 plugins</span><button class="btn" onclick="markDone(this)">Open Marketplace</button></li>
-    </ul>
-  </div>
-</section>
-
-<section class="container grid cols-3">
-  <div class="tile">
-    <div class="ico">📬</div>
-    <div>
-      <h3>Priority inbox</h3>
-      <div class="small">Summaries first. Action cards for quick replies or scheduling.</div>
-    </div>
-  </div>
-  <div class="tile">
-    <div class="ico">⚙️</div>
-    <div>
-      <h3>Automation recipes</h3>
-      <div class="small">News digests, price watchers, content reposters—ready to toggle.</div>
-    </div>
-  </div>
-  <div class="tile">
-    <div class="ico">🧩</div>
-    <div>
-      <h3>Extensible by design</h3>
-      <div class="small">Bring your tools: Notion, Drive, n8n, social schedulers, and more.</div>
-    </div>
-  </div>
-</section>
-
-<footer class="footer">
-  <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <div>© 2025 AI Portal Prototype — Enter Dashboard</div>
-    <div class="small">Pro tip: Hit the 🔔 for the nostalgic chime.</div>
-  </div>
-</footer>
-
-<script>
-function toast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2200);
-}
-function mailChime(){
-  // Simple two-note chime
-  try{
-    const ctx=new (window.AudioContext||window.webkitAudioContext)();
-    const now=ctx.currentTime;
-    const seq=[880,1318.5];
-    seq.forEach((freq,i)=>{
-      const o=ctx.createOscillator();
-      const g=ctx.createGain();
-      o.type='sine'; o.frequency.value=freq;
-      o.connect(g); g.connect(ctx.destination);
-      g.gain.setValueAtTime(0, now + i*0.22);
-      g.gain.linearRampToValueAtTime(0.22, now + i*0.22 + 0.01);
-      g.gain.exponentialRampToValueAtTime(0.0001, now + i*0.22 + 0.5);
-      o.start(now + i*0.22); o.stop(now + i*0.22 + 0.52);
-    });
-  }catch(e){}
-  toast("You've got mail!");
-}
-function quickPlan(){
-  const items = [
-    "Triage inbox (10m)",
-    "Draft outreach (20m)",
-    "Polish landing copy (25m)",
-    "Review automations (10m)",
-    "Prep social post (15m)"
-  ];
-  const plan = "Quick Plan:\n• " + items.join("\n• ");
-  toast("Plan created. Check console.");
-  console.log(plan);
-  // Render plan inline
-  const node = document.getElementById('quick-plan');
-  if(node){ node.innerText = plan; }
-}
-function markDone(btn){
-  btn.textContent = "Done ✓";
-  btn.disabled = true;
-  btn.classList.add('primary');
-}
-</script>
+    <header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="news.html">Top Stories</a>
+            <a href="explore.html">Explore</a>
+            <a href="labs.html">Labs</a>
+            <a href="roadmap.html">Roadmap</a>
+            <a href="help.html">Help</a>
+            <a href="AI_Portal_EnterDashboard.html">Dashboard</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Your AI Portal Dashboard</h1>
+        <div class="card">
+            <h2>Welcome Back!</h2>
+            <p>This is your personalized hub for exploring the latest in AI, curated content, and upcoming experiments.</p>
+        </div>
+        <div class="card">
+            <h2>Today's Top 5 Stories</h2>
+            <ul class="story-list">
+                <li><a class="story-title" href="#">AI Breakthrough: New Model Solves Complex Math Problems Instantly</a><br><small>Published 2 hours ago</small></li>
+                <li><a class="story-title" href="#">Robotics Update: Humanoid Assistant Passes Real-World Stress Tests</a><br><small>Published 4 hours ago</small></li>
+                <li><a class="story-title" href="#">Tech & Ethics: Global Debate on AI Rights Gains Momentum</a><br><small>Published 6 hours ago</small></li>
+                <li><a class="story-title" href="#">Creative AI: Artists Use Neural Networks to Design Interactive Murals</a><br><small>Published 8 hours ago</small></li>
+                <li><a class="story-title" href="#">Automation in Action: Self-Driving Delivery Vans Hit Suburban Streets</a><br><small>Published 10 hours ago</small></li>
+            </ul>
+        </div>
+        <div class="card">
+            <h2>Quick Actions</h2>
+            <ul>
+                <li><a href="explore.html">Discover New AI Tools</a></li>
+                <li><a href="labs.html">Experiment with Beta Features</a></li>
+                <li><a href="roadmap.html">Check the AI Development Roadmap</a></li>
+                <li><a href="help.html">Visit Help & FAQs</a></li>
+            </ul>
+        </div>
+    </main>
 </body>
 </html>
